@@ -1,7 +1,7 @@
 # Alfood
 
 O Alfood é um site que lista restaurantes e pratos do menu. 
-É um MVP criado durante o curso de **Integrando seu projeto React com APIs** da Alura.
+É um MVP criado durante o curso **Integrando seu projeto React com APIs** da Alura.
 
 <img src="screencapture.png" alt="Imagem do Alfood" width="50%">
 
@@ -15,13 +15,13 @@ O Alfood possui interface gráfica feita em ReactJS e consome dados de uma API f
 Para atender todas as necessidades do projeto, foram utilizadas as seguintes tecnologias:
 
 - `React`
-- `React Hooks`: useEffect, useState.
+- `React Hooks` useEffect, useState...
 - `TypeScript`
 - `axios`
 
 ## 🛠️ Abrir e rodar o projeto
 
-Para abrir e rodar o projeto, execute npm i para instalar as dependências e npm start para inicar o projeto.
+Para abrir e rodar o projeto, execute npm i (ou yarn) para instalar as dependências e npm start (ou yarn start) para inicar o projeto.
 
 Depois, acesse <a href="http://localhost:3000/">http://localhost:3000/</a> no seu navegador.
 
