@@ -1,24 +1,21 @@
-![Integrando seu projeto React com APIs](thumbnail.png)
-
 # Alfood
 
 O Alfood é um site que lista restaurantes e pratos do menu. 
-É um MVP que tá só começando e ainda tem muitas funcionalidades novas para serem desenvolvidas.
+É um MVP criado durante o curso de **Integrando seu projeto React com APIs** da Alura.
 
 <img src="screencapture.png" alt="Imagem do Alfood" width="50%">
 
 
 ## 🔨 Funcionalidades do projeto
 
-O Alfood começa com uma listagem estática de seu conteúdo e é esse o problema que queremos resolver.
-No decorrer do curso, vamos implementar toda a camada de comunicação com a API.
+O Alfood possui interface gráfica feita em ReactJS e consome dados de uma API feita em Python.
 
 ## ✔️ Técnicas e tecnologias utilizadas
 
-Se liga nessa lista de tudo que usaremos nesse treinamento:
+Para atender todas as necessidades do projeto, foram utilizadas as seguintes tecnologias:
 
 - `React`
-- `React Hooks`
+- `React Hooks`: useEffect, useState.
 - `TypeScript`
 - `axios`
 
