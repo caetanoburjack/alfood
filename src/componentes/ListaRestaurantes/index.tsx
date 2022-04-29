@@ -1,9 +1,14 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import axios, { AxiosRequestConfig } from 'axios';
+import React, { useEffect, useState } from 'react';
 import { IPaginacao } from '../../interfaces/IPaginacao';
 import IRestaurante from '../../interfaces/IRestaurante';
 import style from './ListaRestaurantes.module.scss';
 import Restaurante from './Restaurante';
+
+interface IParametrosBusca {
+  ordering?: string
+  search?: string
+}
 
 const ListaRestaurantes = () => {
 
@@ -96,6 +101,8 @@ const ListaRestaurantes = () => {
   const [proximaPagina, setProximaPagina] = useState('');
   const [paginaAnterior, setPaginaAnterior] = useState('');
 
+  const [busca, setBusca] = useState('')
+
   useEffect(() => {
     axios.get<IPaginacao<IRestaurante>>('http://localhost:8000/api/v1/restaurantes/')
       .then(resposta => {
@@ -107,14 +114,37 @@ const ListaRestaurantes = () => {
       })
   }, [])
 
-  const carregarDados = (url: string) => {
-    axios.get<IPaginacao<IRestaurante>>(url)
+  const carregarDados = (url: string, opcoes: AxiosRequestConfig = {}) => {
+    axios.get<IPaginacao<IRestaurante>>(url, opcoes)
       .then(resposta => {
         setRestaurantes(resposta.data.results)
         setProximaPagina(resposta.data.next)
         setPaginaAnterior(resposta.data.previous)
       })
+      .catch(erro => {
+        console.log(erro)
+      })
   }
+
+
+  const buscar = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const opcoes = {
+      params: {
+
+      } as IParametrosBusca
+    }
+    if (busca) {
+      opcoes.params.search = busca
+    }
+    carregarDados('http://localhost:8000/api/v1/restaurantes/', opcoes)
+  }
+
+  useEffect(() => {
+    carregarDados('http://localhost:8000/api/v1/restaurantes/')
+  }, [])
+
+
 
   const verMais = () => {
     axios.get<IPaginacao<IRestaurante>>(proximaPagina)
@@ -125,9 +155,12 @@ const ListaRestaurantes = () => {
   }
   return (<section className={style.ListaRestaurantes}>
     <h1>Os restaurantes mais <em>bacanas</em>!</h1>
+    <form onSubmit={buscar}>
+      <input type="text" value={busca} onChange={evento => setBusca(evento.target.value)} />
+      <button type='submit'>buscar</button>
+    </form>
     {restaurantes?.map(item => <Restaurante restaurante={item} key={item.id} />)}
     {proximaPagina && <button onClick={verMais}>Ver Mais </button>}
-
     {<button onClick={() => carregarDados(paginaAnterior)} disabled={!paginaAnterior}>
       Página Anterior
     </button>}

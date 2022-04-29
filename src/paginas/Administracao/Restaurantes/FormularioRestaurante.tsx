@@ -23,11 +23,19 @@ const FormularioRestaurante = () => {
         event.preventDefault()
         console.log('Enviando dados para a API: ')
         console.log(nomeRestaurante)
-        axios.post('http://localhost:8000/api/v2/restaurantes/', {
-            nome: nomeRestaurante
-        }).then(() => {
-            console.log("Restaurante Cadastrado com Sucesso!")
-        })
+        if (parametros.id) {
+            axios.put(`http://localhost:8000/api/v2/restaurantes/${parametros.id}/`, {
+                nome: nomeRestaurante
+            }).then(() => {
+                console.log("Restaurante Atualizado com Sucesso!")
+            })
+        } else {
+            axios.post('http://localhost:8000/api/v2/restaurantes/', {
+                nome: nomeRestaurante
+            }).then(() => {
+                console.log("Restaurante Cadastrado com Sucesso!")
+            })
+        }
     }
 
     return (
