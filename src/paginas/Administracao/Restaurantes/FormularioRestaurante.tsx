@@ -1,7 +1,7 @@
-import { Button, TextField } from "@mui/material"
-import axios from "axios"
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Paper, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import http from "../../../http"
 import IRestaurante from "../../../interfaces/IRestaurante"
 
 const FormularioRestaurante = () => {
@@ -10,7 +10,7 @@ const FormularioRestaurante = () => {
 
     useEffect(() => {
         if (parametros.id) {
-            axios.get<IRestaurante>(`http://localhost:8000/api/v2/restaurantes/${parametros.id}/`)
+            http.get<IRestaurante>(`restaurantes/${parametros.id}/`)
                 .then(resposta => {
                     setNomeRestaurante(resposta.data.nome)
                 });
@@ -24,13 +24,13 @@ const FormularioRestaurante = () => {
         console.log('Enviando dados para a API: ')
         console.log(nomeRestaurante)
         if (parametros.id) {
-            axios.put(`http://localhost:8000/api/v2/restaurantes/${parametros.id}/`, {
+            http.put(`restaurantes/${parametros.id}/`, {
                 nome: nomeRestaurante
             }).then(() => {
                 console.log("Restaurante Atualizado com Sucesso!")
             })
         } else {
-            axios.post('http://localhost:8000/api/v2/restaurantes/', {
+            http.post('restaurantes/', {
                 nome: nomeRestaurante
             }).then(() => {
                 console.log("Restaurante Cadastrado com Sucesso!")
@@ -39,14 +39,35 @@ const FormularioRestaurante = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <TextField value={nomeRestaurante}
-                onChange={event => setNomeRestaurante(event.target.value)}
-                label="Nome do Restaurante"
-                variant="standard">
-            </TextField>
-            <Button type="submit" variant="outlined">Salvar</Button>
-        </form>
+        <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center" }}>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Card sx={{ marginTop: 3 }} >
+                    <CardMedia
+                        component="img"
+                        height="140"
+                        image="https://mui.com/static/images/cards/paella.jpg"
+                        alt="green iguana"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Cadastro de Restaurante
+                        </Typography>
+                        <TextField value={nomeRestaurante} autoComplete="false"
+                            onChange={event => setNomeRestaurante(event.target.value)}
+                            label="Nome do Restaurante"
+                            variant="standard"
+                            fullWidth
+                            required
+                        >
+                        </TextField>
+                    </CardContent>
+                    <CardActions>
+                        <Button sx={{ marginTop: 2 }} type="submit" fullWidth variant="outlined">Salvar</Button>
+                    </CardActions>
+
+                </Card>
+            </Box>
+        </Box>
     )
 }
 
