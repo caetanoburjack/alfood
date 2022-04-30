@@ -1,10 +1,10 @@
-import { AppBar, Box, Button, Card, CardActions, CardContent, CardMedia, Container, Paper, TextField, Typography } from "@mui/material"
+import { AppBar, Box, Button, Container, Link, Paper, Toolbar, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import http from "../../../http"
-import IRestaurante from "../../../interfaces/IRestaurante"
+import { Link as RouterLink, Outlet, useParams } from "react-router-dom"
+import http from "../../http"
+import IRestaurante from "../../interfaces/IRestaurante"
 
-const FormularioRestaurante = () => {
+const PaginaBaseAdmin = () => {
 
     const parametros = useParams()
 
@@ -39,13 +39,38 @@ const FormularioRestaurante = () => {
     }
 
     return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
+        <>
+            <AppBar position="static">
+                <Container maxWidth="xl">
+                    <Toolbar>
+                        <Typography>
+                            Administração
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexGrow: 1 }}>
+                            <Link component={RouterLink} to="/admin/restaurantes">
+                                <Button sx={{ my: 2, color: 'white' }}>
+                                    Restaurantes
+                                </Button>
+                            </Link>
+                            <Link component={RouterLink} to="/admin/restaurantes/novo">
+                                <Button sx={{ my: 2, color: 'white' }}>
+                                    Novo Restaurante
+                                </Button>
+                            </Link>
+                        </Box>
+                    </Toolbar>
 
-
-            </Container>
-        </AppBar>
+                </Container>
+            </AppBar>
+            <Box>
+                <Container maxWidth="lg" sx={{ mt: 1 }}>
+                    <Paper sx={{ p: 2 }}>
+                        <Outlet />
+                    </Paper>
+                </Container>
+            </Box>
+        </>
     )
 }
 
-export default FormularioRestaurante
+export default PaginaBaseAdmin
