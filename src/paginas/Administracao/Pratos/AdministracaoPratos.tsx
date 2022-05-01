@@ -10,7 +10,7 @@ const AdministracaoPratos = () => {
     useEffect(() => {
         http.get<IPrato[]>('pratos/')
             .then(resposta => setPratos(resposta.data))
-    })
+    },[])
 
     const excluirPrato = (pratoAExcluir: IPrato) => {
         http.delete(`pratos/${pratoAExcluir.id}/`)

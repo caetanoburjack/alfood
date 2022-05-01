@@ -10,7 +10,7 @@ const AdministracaoRestaurantes = () => {
     useEffect(() => {
         http.get<IRestaurante[]>('restaurantes/')
             .then(resposta => setRestaurantes(resposta.data))
-    })
+    }, [])
 
     const excluirRestaurante = (restauranteAExcluir: IRestaurante) => {
         http.delete(`restaurantes/${restauranteAExcluir.id}/`)
