@@ -1,6 +1,5 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, CardMedia, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
 import http from "../../../http"
 import IRestaurante from "../../../interfaces/IRestaurante"
 import ITag from "../../../interfaces/ITag"
@@ -12,24 +11,57 @@ const FormularioPrato = () => {
 
     const [tag, setTag] = useState('')
     const [restaurante, setRestaurante] = useState('')
-    
+
     const [tags, setTags] = useState<ITag[]>([])
     const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
+
+    const [imagem, setImagem] = useState<File | null>(null)
+
+    const selecionarArquivo = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files?.length) {
+            setImagem(event.target.files[0])
+        } else {
+            setImagem(null)
+        }
+    }
 
     useEffect(() => {
         http.get<{ tags: ITag[] }>('tags/')
             .then(resposta => setTags(resposta.data.tags))
         http.get<IRestaurante[]>('restaurantes/')
             .then(resposta => setRestaurantes(resposta.data))
-    })
+    },[])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
+        const formData = new FormData()
+
+        formData.append('nome', nomePrato)
+        formData.append('descricao', descricaoPrato)
+
+        formData.append('tag', tag)
+        formData.append('restaurante', restaurante)
+
+        if (imagem) {
+            formData.append('imagem', imagem)
+        }
+
+        http.request(
+            {
+                url: 'pratos/',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                data: formData
+            })
+            .then(() => console.log('Prato Cadastrado com Sucesso!'))
+            .catch(erro => console.log(erro))
     }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center" }}>
+        <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", flexGrow: 1 }}>
             <Box component="form" onSubmit={handleSubmit}>
                 <Card sx={{ marginTop: 3 }} >
                     <CardMedia
@@ -44,7 +76,7 @@ const FormularioPrato = () => {
                         </Typography>
                         <TextField value={nomePrato} autoComplete="false"
                             onChange={event => setNomePrato(event.target.value)}
-                            label="Nome do Prato"
+                            label="Nome"
                             variant="standard"
                             fullWidth
                             required
@@ -52,7 +84,7 @@ const FormularioPrato = () => {
                         </TextField>
                         <TextField value={descricaoPrato} autoComplete="false"
                             onChange={event => setDescricaoPrato(event.target.value)}
-                            label="Descricao do Prato"
+                            label="Descricao"
                             variant="standard"
                             fullWidth
                             margin="dense"
@@ -82,6 +114,8 @@ const FormularioPrato = () => {
                                 }
                             </Select>
                         </FormControl>
+
+                        <input type="file" onChange={selecionarArquivo} />
 
                     </CardContent>
                     <CardActions>
