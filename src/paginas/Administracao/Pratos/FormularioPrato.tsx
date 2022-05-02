@@ -97,7 +97,7 @@ const FormularioPrato = () => {
                             <Select labelId="select-tag" value={tag} onChange={event => setTag(event.target.value)}>
                                 {
                                     tags.map(tag =>
-                                        <MenuItem key={tag.id} value={tag.id}>
+                                        <MenuItem key={tag.id} value={tag.value}>
                                             {tag.value}
                                         </MenuItem>)
                                 }
