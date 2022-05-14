@@ -28,9 +28,10 @@ const FormularioPrato = () => {
     useEffect(() => {
         http.get<{ tags: ITag[] }>('tags/')
             .then(resposta => setTags(resposta.data.tags))
+
         http.get<IRestaurante[]>('restaurantes/')
             .then(resposta => setRestaurantes(resposta.data))
-    },[])
+    }, [])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
